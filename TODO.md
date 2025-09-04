@@ -1,17 +1,24 @@
 # Project To-Do List
 
-## Backend (Django REST Framework)
-1. Initialize Django project in `backend` folder.
+
+## Microservices Backend (Django REST Framework)
+
+### Frontend User API (`services/frontend_user_api/`)
+1. Initialize Django project for user management (registration, login, roles).
 2. Set up Django REST Framework.
-3. Create user management (registration, login, roles).
-4. Design models for boiler, sensor, and alerts.
-5. Build API endpoints for:
-   - User management
+3. Implement user registration, login, and role management.
+4. Add authentication (token-based or JWT).
+5. Write unit tests for user endpoints.
+
+### Frontend API (`services/frontend_api/`)
+1. Initialize Django project for dashboard and boiler data.
+2. Set up Django REST Framework.
+3. Design models for boiler, sensor, and alerts.
+4. Build API endpoints for:
    - Boiler data (CRUD)
    - Sensor data (CRUD)
    - Alerts (CRUD)
-6. Add authentication (token-based or JWT).
-7. Write unit tests for API endpoints.
+5. Write unit tests for API endpoints.
 
 ## Frontend (React + TypeScript)
 1. Clean up default React files and structure.
