@@ -2,14 +2,14 @@
 
 ## Microservices Backend (Django REST Framework)
 
-### Frontend User API (`services/frontend_user_api/`)
+### User API (`services/user_api/`)
 1. Initialize Django project for user management (registration, login, roles).
 2. Set up Django REST Framework.
 3. Implement user registration, login, and role management.
 4. Add authentication (token-based or JWT).
 5. Write unit tests for user endpoints.
 
-### Frontend API (`services/frontend_api/`)
+### Dashboard API (`services/dashboard_api/`)
 1. Initialize Django project for dashboard data only.
 2. Set up Django REST Framework.
 3. Build API endpoints for dashboard data.

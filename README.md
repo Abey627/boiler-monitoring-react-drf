@@ -1,12 +1,13 @@
 
 ## Main Modules
 
-- **Frontend User API:**
+
+- **User API:**
 	- Register, login, and manage users securely using Django REST Framework.
 	- Role-based access for different user types (e.g., admin, operator).
 	- Runs independently for performance and reliability.
 
-- **Frontend API:**
+- **Dashboard API:**
 	- RESTful endpoints for dashboard data only.
 	- Real-time visualization and historical data management.
 
@@ -37,12 +38,12 @@ This project is designed to help monitor industrial boilers in real-time. It pro
 	- Navigate to `frontend` folder
 	- Run `npm install` to install dependencies
 	- Run `npm start` to launch the React app
-2. **Frontend User API:**
-	- Navigate to `services/frontend_user_api` folder
+2. **User API:**
+	- Navigate to `services/user_api` folder
 	- Set up a Python environment and install Django/DRF
 	- Run Django server
-3. **Frontend API:**
-	- Navigate to `services/frontend_api` folder
+3. **Dashboard API:**
+	- Navigate to `services/dashboard_api` folder
 	- Set up a Python environment and install Django/DRF
 	- Run Django server
 4. **IoT Simulator:**
