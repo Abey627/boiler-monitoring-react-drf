@@ -1,0 +1,33 @@
+  # Uses wait-for-it.sh to delay Django startup until PostgreSQL is ready
+services:
+  db: # PostgreSQL database service
+    image: postgres:16 # Use official PostgreSQL version 16 image
+    restart: always # Always restart the container unless stopped manually
+    env_file:
+      - .env
+    ports:
+      - "5432:5432" # Expose PostgreSQL port 5432 to host
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persist database data between restarts
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql # Initialization script for database
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user_account"] # Check if PostgreSQL is ready
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  user_api: # Django user_api service
+    build: ./user_api # Build Docker image from Dockerfile in user_api directory
+    command: python manage.py runserver 0.0.0.0:8000 # Start Django development server
+    volumes:
+      - ./user_api:/app # Mount local user_api directory to /app in container
+    ports:
+      - "8000:8000" # Expose Django server port 8000 to host
+    depends_on:
+      db:
+        condition: service_healthy # Wait for db health before starting user_api
+    env_file:
+      - .env
+
+volumes:
+  postgres_data: # Named volume for persistent PostgreSQL data
