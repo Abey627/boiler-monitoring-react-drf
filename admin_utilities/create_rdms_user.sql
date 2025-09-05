@@ -1,7 +1,5 @@
 -- PostgreSQL commands to set up RDMS user and databases
--- WARNING: Replace 'your_secure_password_here' with a secure password before running
 
--- Create additional user if doesn't exist
 DO $$
 BEGIN
     IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'rdms_user') THEN

@@ -2,10 +2,45 @@
 ## Main Modules
 
 
-- **User API:**
-	- Register, login, and manage users securely using Django REST Framework.
-	- Role-based access for different user types (e.g., admin, operator).
-	- Runs independently for performance and reliability.
+- **User API Service Architecture:**
+	- Built with Django REST Framework for secure user management
+	- **Core Components:**
+		- Custom User Model with role-based access (admin, operator, viewer)
+		- JWT (JSON Web Token) Authentication
+		- RESTful API endpoints
+	
+	- **API Endpoints:**
+		- POST `/api/register/` - New user registration
+		- POST `/api/token/` - Obtain JWT access & refresh tokens
+		- POST `/api/token/refresh/` - Refresh JWT token
+		- GET `/api/me/` - Get current user profile
+		- PUT `/api/me/` - Update current user profile
+		- GET `/api/users/` - List users (admin-only for full list)
+
+	- **Security Features:**
+		- JWT-based authentication
+		- Password hashing and validation
+		- Role-based access control (RBAC)
+		- Token refresh mechanism
+
+	- **Data Model:**
+		- Extended Django's AbstractUser model
+		- Custom fields:
+			- role (admin/operator/viewer)
+			- phone_number
+			- company
+		
+	- **Development Setup:**
+		- Containerized with Docker
+		- PostgreSQL database backend
+		- Auto-migrations on startup
+		- Hot-reload enabled for development
+		
+	- **Configuration:**
+		- Environment-based settings
+		- Secure credential management
+		- Database connection pooling
+		- CORS configuration for frontend integration
 
 - **Dashboard API:**
 	- RESTful endpoints for dashboard data only.
@@ -151,6 +186,63 @@ The system implements a multi-layered security approach with different database 
 - User API: http://localhost:8000
 - Dashboard API: http://localhost:8001
 - Database: localhost:5432
+
+### User API Usage Examples
+
+#### 1. Register a New User
+```bash
+curl -X POST http://localhost:8000/api/register/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "operator1",
+    "password": "SecurePass123!",
+    "password2": "SecurePass123!",
+    "email": "operator@example.com",
+    "first_name": "John",
+    "last_name": "Doe",
+    "role": "operator",
+    "phone_number": "+1234567890",
+    "company": "Acme Industries"
+  }'
+```
+
+#### 2. Obtain JWT Token
+```bash
+curl -X POST http://localhost:8000/api/token/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "operator1",
+    "password": "SecurePass123!"
+  }'
+```
+
+#### 3. Get User Profile
+```bash
+curl http://localhost:8000/api/me/ \
+  -H "Authorization: Bearer <your_jwt_token>"
+```
+
+#### 4. Update User Profile
+```bash
+curl -X PUT http://localhost:8000/api/me/ \
+  -H "Authorization: Bearer <your_jwt_token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "first_name": "John",
+    "last_name": "Doe",
+    "phone_number": "+1234567890",
+    "company": "Acme Industries Ltd"
+  }'
+```
+
+#### 5. Refresh Token
+```bash
+curl -X POST http://localhost:8000/api/token/refresh/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "refresh": "<your_refresh_token>"
+  }'
+```
 	- Register, login, and manage users securely using Django REST Framework.
 	- Role-based access for different user types (e.g., admin, operator).
 	- Runs independently for performance and reliability.

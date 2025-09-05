@@ -21,7 +21,6 @@
     # User Management API Service
     user_api:
       build: ./user_api
-      command: python manage.py runserver 0.0.0.0:8000
       volumes:
         - ./user_api:/app  # For development hot-reload
       ports:
@@ -31,6 +30,10 @@
           condition: service_healthy
       env_file:
         - .env
+      environment:
+        - POSTGRES_HOST=db
+        - POSTGRES_PORT=5432
+      restart: unless-stopped
 
   volumes:
     postgres_data:
