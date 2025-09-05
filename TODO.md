@@ -5,15 +5,17 @@
 ### User API (`services/user_api/`)
 1. Initialize Django project for user management (registration, login, roles). [done]
 2. Set up Django REST Framework. [done]
-3. Implement user registration, login, and role management.
-4. Add authentication (token-based or JWT).
-5. Write unit tests for user endpoints.
+3. Set up database and user roles (RDMS). [done]
+4. Implement user registration, login, and role management.
+5. Add authentication (token-based or JWT).
+6. Write unit tests for user endpoints.
 
 ### Dashboard API (`services/dashboard_api/`)
 1. Initialize Django project for dashboard data only. [done]
 2. Set up Django REST Framework. [done]
-3. Build API endpoints for dashboard data.
-4. Write unit tests for API endpoints.
+3. Set up database access and permissions. [done]
+4. Build API endpoints for dashboard data.
+5. Write unit tests for API endpoints.
 
 ## Frontend (React + TypeScript)
 1. Clean up default React files and structure. [done]
@@ -36,12 +38,13 @@
 ## Docker & Deployment
 1. Write Dockerfile for each microservice and frontend.
 2. Set up PostgreSQL service in Docker Compose. [done]
-3. Create `docker-compose.yml` to run all services together.
-3. Test local deployment.
-4. Document deployment steps in README.
+3. Create `docker-compose.yml` to run all services together. [done]
+4. Test local deployment. [partially done]
+5. Document deployment steps in README.
 
 ## General
 1. Update README with setup and usage instructions.
 2. Add code comments and docstrings.
-3. Set up `.env` files for secrets/configuration.
+3. Set up `.env` files for secrets/configuration. [done]
 4. Add sample data for testing/demo.
+5. Set up database users and roles (RDMS user). [done]

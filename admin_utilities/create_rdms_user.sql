@@ -5,16 +5,19 @@
 DO $$
 BEGIN
     IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'rdms_user') THEN
-        -- Replace 'your_secure_password_here' with an actual secure password
-        CREATE ROLE rdms_user WITH LOGIN PASSWORD 'your_secure_password_here';
+        -- Create RDMS user with superuser privileges for full database administration
+        CREATE ROLE rdms_user WITH 
+            LOGIN 
+            PASSWORD 'Rdms#2025@SecureDB!Pass'
+            SUPERUSER    -- Can do anything
+            CREATEDB    -- Can create databases
+            CREATEROLE  -- Can create/alter/drop roles
+            REPLICATION -- Can initiate streaming replication
+            BYPASSRLS;  -- Can bypass row-level security
     END IF;
 END$$;
 
--- Create additional database if it doesn't exist
-CREATE DATABASE user_accounts_db;
-
--- Grant necessary privileges
-GRANT ALL PRIVILEGES ON DATABASE user_api_db TO rdms_user;
+-- Additional safety measure: ensure the role has all privileges on the default database
 GRANT ALL PRIVILEGES ON DATABASE user_accounts_db TO rdms_user;
 
 -- Note: Run this script manually when PostgreSQL is up using:
