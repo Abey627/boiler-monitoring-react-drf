@@ -3,20 +3,20 @@
 ## Microservices Backend (Django REST Framework)
 
 ### User API (`services/user_api/`)
-1. Initialize Django project for user management (registration, login, roles).
-2. Set up Django REST Framework.
+1. Initialize Django project for user management (registration, login, roles). [done]
+2. Set up Django REST Framework. [done]
 3. Implement user registration, login, and role management.
 4. Add authentication (token-based or JWT).
 5. Write unit tests for user endpoints.
 
 ### Dashboard API (`services/dashboard_api/`)
-1. Initialize Django project for dashboard data only.
-2. Set up Django REST Framework.
+1. Initialize Django project for dashboard data only. [done]
+2. Set up Django REST Framework. [done]
 3. Build API endpoints for dashboard data.
 4. Write unit tests for API endpoints.
 
 ## Frontend (React + TypeScript)
-1. Clean up default React files and structure.
+1. Clean up default React files and structure. [done]
 2. Create pages/components:
    - Login/Register
    - Dashboard (real-time data, charts)
@@ -35,7 +35,8 @@
 
 ## Docker & Deployment
 1. Write Dockerfile for each microservice and frontend.
-2. Create `docker-compose.yml` to run all services together.
+2. Set up PostgreSQL service in Docker Compose. [done]
+3. Create `docker-compose.yml` to run all services together.
 3. Test local deployment.
 4. Document deployment steps in README.
 

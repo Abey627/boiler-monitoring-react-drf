@@ -79,11 +79,11 @@ WSGI_APPLICATION = 'user_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DJANGO_DB_NAME', 'user_api_db'),
-        'USER': os.environ.get('DJANGO_DB_USER', 'boiler_usr_8f3a'),
-        'PASSWORD': os.environ.get('DJANGO_DB_PASSWORD', 'Qv7!pX2@rT9zLw4s'),
-        'HOST': os.environ.get('DJANGO_DB_HOST', 'db'),
-        'PORT': os.environ.get('DJANGO_DB_PORT', '5432'),
+        'NAME': 'user_accounts_db',
+        'USER': 'db_user_service_user_api',
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 

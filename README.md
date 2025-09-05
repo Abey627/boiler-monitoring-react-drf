@@ -32,25 +32,79 @@
 ## Purpose
 This project is designed to help monitor industrial boilers in real-time. It provides a user-friendly web interface for viewing boiler status, alerts, and historical data. The platform is built as a portfolio project to showcase skills in React, Django REST Framework, Docker, and IoT simulation.
 
+## Database Architecture
+
+### Database Overview
+The system uses PostgreSQL for data storage with a microservices-oriented database design:
+
+- **user_accounts_db**
+  - Dedicated database for the User API service
+  - Handles user authentication and authorization
+  - Managed by the `db_user_service_user_api` role with appropriate security permissions
+  - Contains Django's default auth tables and custom user-related tables
+
+### Database Security
+- Each microservice has its own dedicated database user
+- The `db_user_service_user_api` role has limited permissions specific to user management
+- Database credentials are managed through environment variables
+- Connection strings and sensitive data are stored in `.env` files (not version controlled)
+
+### Connection Details
+- Host: PostgreSQL container (`db`)
+- Port: 5432
+- Database: `user_accounts_db`
+- User: `db_user_service_user_api`
+- Password: Managed via environment variables
+
+### Database Initialization
+- Database and roles are automatically created during container startup
+- Django migrations handle schema creation and updates
+- Custom SQL scripts in `scripts/init-db.sql` configure additional permissions
+
 
 ## How to Run
-1. **Frontend:**
-	- Navigate to `frontend` folder
-	- Run `npm install` to install dependencies
-	- Run `npm start` to launch the React app
-2. **User API:**
-	- Navigate to `services/user_api` folder
-	- Set up a Python environment and install Django/DRF
-	- Run Django server
-3. **Dashboard API:**
-	- Navigate to `services/dashboard_api` folder
-	- Set up a Python environment and install Django/DRF
-	- Run Django server
-4. **IoT Simulator:**
-	- Navigate to `iot_simulator` folder
-	- Run the simulator script to generate data (planned)
-5. **Docker:**
-	- Use Docker Compose to run all services together
+
+### Prerequisites
+- Docker and Docker Compose installed
+- Node.js for frontend development
+- Python 3.11+ for local development
+
+### Setup Instructions
+
+1. **Environment Setup:**
+   ```bash
+   # Clone the repository
+   git clone https://github.com/Abey627/boiler-monitoring-react-drf.git
+   cd boiler-monitoring-react-drf
+
+   # Copy environment template
+   cd services
+   cp .env.example .env
+   # Edit .env with your desired configuration
+   ```
+
+2. **Start Services:**
+   ```bash
+   # From the services directory
+   docker-compose up --build
+   ```
+   This will start:
+   - PostgreSQL database
+   - User API service
+   - Dashboard API service
+
+3. **Frontend Development:**
+   ```bash
+   cd frontend
+   npm install
+   npm start
+   ```
+
+### Service URLs
+- Frontend: http://localhost:3000
+- User API: http://localhost:8000
+- Dashboard API: http://localhost:8001
+- Database: localhost:5432
 	- Register, login, and manage users securely using Django REST Framework.
 	- Role-based access for different user types (e.g., admin, operator).
 	- Runs independently for performance and reliability.
