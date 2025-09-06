@@ -186,7 +186,7 @@ The system implements a multi-layered security approach with different database 
    # Edit .env with your desired configuration
    ```
 
-2. **Start Services:**
+2. **Start Backend Services:**
    ```bash
    # From the services directory
    docker-compose up --build
@@ -196,6 +196,14 @@ The system implements a multi-layered security approach with different database 
    - PostgreSQL database
    - User API service
    - Initialize test users for development
+
+3. **Start Frontend Application:**
+   ```bash
+   # From the frontend directory
+   npm install
+   npm start
+   ```
+   The frontend will be available at http://localhost:3000
 
 3. **Import Postman Collection:**
    - Import `postman/Boiler_Monitoring_API.postman_collection.json`
@@ -208,9 +216,91 @@ The system implements a multi-layered security approach with different database 
    - Use these accounts to test different role permissions
 
 ### Service URLs
-- Frontend: http://localhost:3000 (planned)
+- Frontend: http://localhost:3000
 - API Gateway (Nginx): http://localhost
 - Database: localhost:5432 (internal only)
+
+### Frontend Application
+
+The frontend is built with React, TypeScript, and Material-UI, providing a modern and responsive user interface.
+
+#### Features
+- **Authentication System**
+  - JWT-based authentication
+  - Login and registration forms
+  - Automatic token refresh
+  - Persistent authentication state
+
+- **User Interface**
+  - Modern Material-UI components
+  - Responsive design for all screen sizes
+  - Role-based access control
+  - Intuitive navigation
+
+- **Dashboard**
+  - User information overview
+  - Role-specific content
+  - Interactive cards with hover effects
+  - Real-time updates
+
+- **User Management**
+  - User list with search functionality (admin only)
+  - User profile management
+  - Role-based permissions
+  - Responsive data tables
+
+#### Frontend Setup
+
+1. **Install Dependencies:**
+   ```bash
+   cd frontend
+   npm install
+   ```
+
+2. **Environment Setup:**
+   ```bash
+   # Create .env file
+   echo "REACT_APP_API_URL=http://localhost/api" > .env
+   ```
+
+3. **Start Development Server:**
+   ```bash
+   npm start
+   ```
+
+4. **Build for Production:**
+   ```bash
+   npm run build
+   ```
+
+#### Frontend Structure
+```
+frontend/
+├── src/
+│   ├── components/
+│   │   ├── Dashboard.tsx      # Main dashboard view
+│   │   ├── Layout.tsx         # Application layout with navigation
+│   │   ├── LoginForm.tsx      # User login form
+│   │   ├── RegisterForm.tsx   # User registration form
+│   │   ├── UserList.tsx       # User management (admin only)
+│   │   └── UserProfile.tsx    # User profile management
+│   ├── contexts/
+│   │   └── AuthContext.tsx    # Authentication state management
+│   ├── routes/
+│   │   └── AppRoutes.tsx      # Application routing
+│   ├── services/
+│   │   └── api.ts            # API service integration
+│   ├── types/
+│   │   └── auth.ts           # TypeScript type definitions
+│   └── App.tsx               # Root component
+```
+
+#### Key Technologies
+- React 19.1
+- TypeScript 4.9
+- Material-UI v5
+- React Router v6
+- JWT Authentication
 
 ### Test Users
 
@@ -315,7 +405,31 @@ All API endpoints are accessed through the Nginx load balancer at `http://localh
 	- Use Docker Compose to run all services together
 
 ## Getting Started
-This project is beginner-friendly. All code is commented in detail. Start with the frontend (`frontend/src/App.tsx` and `frontend/src/index.tsx`) to learn React basics.
+
+This project is beginner-friendly and well-documented. Here's how to start learning from this codebase:
+
+### Backend Learning Path
+1. Start with `services/user_api/user_api/settings.py` to understand the Django configuration
+2. Move to `services/user_api/accounts/models.py` to see how the user model is implemented
+3. Explore `services/user_api/accounts/views.py` for API endpoint implementations
+4. Study `services/user_api/accounts/urls.py` for URL routing
+
+### Frontend Learning Path
+1. Begin with `frontend/src/App.tsx` to understand the application structure
+2. Look at `frontend/src/contexts/AuthContext.tsx` for authentication state management
+3. Explore `frontend/src/services/api.ts` for API integration
+4. Study the components in `frontend/src/components/` to learn React and Material-UI
+
+### Architecture Understanding
+1. Review `services/docker-compose.yml` for service orchestration
+2. Study `services/nginx/nginx.conf` for API routing
+3. Understand the database setup in `services/scripts/init-db.sql`
+
+## Contributing
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
 
 ## License
 MIT
