@@ -2,373 +2,152 @@
 # Boiler Monitoring Platform
 
 ## Overview
-A comprehensive industrial boiler monitoring system built with React, Django REST Framework, and Docker. This portfolio project showcases real-time monitoring, user management, and IoT integration capabilities.
+A comprehensive industrial boiler monitoring system built with React, Django REST Framework, and Docker. This portfolio project provides real-time monitoring, user management, and IoT integration capabilities for industrial boiler systems.
 
-### Frontend Features
-- **Authentication System**
-  - JWT-based authentication
-  - Login and registration forms
-  - Automatic token refresh
-  - Persistent authentication state
+## Key Features
+### Frontend
+- Modern React application with Material-UI v5
+- JWT-based authentication with automatic token refresh
+- Role-based access control
+- Industrial theme with semantic color coding
+- Responsive dashboard with real-time updates
+- Interactive data visualization
 
-- **Industrial Theme System**
-  - Custom theme designed for boiler monitoring
-  - Industrial color palette with semantic meanings
-    - Blues for primary actions
-    - Orange for warnings
-    - Red for critical alerts
-    - Green for normal operations
-  - Consistent typography and spacing
-  - Smooth animations and transitions
-  - Status indicators for boiler states
-  - Custom scrollbars and card effects
-
-- **User Interface**
-  - Modern Material-UI components
-  - Responsive design for all screen sizes
-  - Role-based access control
-  - Intuitive navigation
-  - Interactive dashboard cards with hover effects
-  - Page transition animations
-
-### Key Features
-- Real-time boiler monitoring and visualization
-- Role-based access control (Admin, Operator, Viewer)
-- Secure JWT authentication
+### Backend
+- Django REST Framework with PostgreSQL
 - Containerized microservices architecture
-- RESTful API design
-	
-	- **API Endpoints:**
-		- POST `/api/users/register/` - New user registration
-		- POST `/api/users/token/` - Obtain JWT access & refresh tokens
-		- POST `/api/users/token/refresh/` - Refresh JWT token
-		- GET `/api/users/me/` - Get current user profile
-		- PUT `/api/users/me/` - Update current user profile
-		- GET `/api/users/list/` - List users (admin-only for full list)
+- Role-based user management (Admin, Operator, Viewer)
+- Secure JWT authentication with token refresh
+- Environment-based configuration
+- Auto-migrations and hot-reload for development
 
-	- **Security Features:**
-		- JWT-based authentication
-		- Password hashing and validation
-		- Role-based access control (RBAC)
-		- Token refresh mechanism
+### API Endpoints
+- POST `/api/users/register/` - New user registration
+- POST `/api/users/token/` - Obtain JWT tokens
+- POST `/api/users/token/refresh/` - Refresh JWT token
+- GET `/api/users/me/` - Current user profile
+- PUT `/api/users/me/` - Update profile
+- GET `/api/users/list/` - List users (admin-only)
 
-	- **Data Model:**
-		- Extended Django's AbstractUser model
-		- Custom fields:
-			- role (admin/operator/viewer)
-			- phone_number
-			- company
-		
-	- **Development Setup:**
-		- Containerized with Docker
-		- PostgreSQL database backend
-		- Auto-migrations on startup
-		- Hot-reload enabled for development
-		
-	- **Configuration:**
-		- Environment-based settings
-		- Secure credential management
-		- Database connection pooling
-		- CORS configuration for frontend integration
-
-- **Dashboard API:**
-	- RESTful endpoints for dashboard data only.
-	- Real-time visualization and historical data management.
-
-- **IoT Ingestion:**
-	- Real-time sensor data collection (planned).
-
-- **AI Processor:**
-	- Analytics and predictive algorithms (planned).
-
-- **Alert Service:**
-	- Notification management (planned).
-
-- **IoT Simulator:**
-	- Generates dummy boiler sensor data for development and testing (planned).
-
-- **Docker Setup:**
-	- Containerized services for easy deployment and local development.
-
-
-# Boiler Monitoring Platform
-
-## Purpose
-This project is designed to help monitor industrial boilers in real-time. It provides a user-friendly web interface for viewing boiler status, alerts, and historical data. The platform is built as a portfolio project to showcase skills in React, Django REST Framework, Docker, and IoT simulation.
+### Planned Features
+- Dashboard API for real-time visualization
+- IoT data ingestion for sensor collection
+- AI analytics for predictive maintenance
+- Alert management system
+- IoT simulator for testing
 
 ## Architecture
 
-### Current Services
+### Services Architecture
 
-#### 1. User Management Service
-- Django REST Framework backend
-- JWT-based authentication
-- Role-based access control
-- PostgreSQL database
-- Key endpoints:
-  - `POST /api/users/register/` - Registration
-  - `POST /api/users/token/` - Authentication
-  - `GET /api/users/me/` - User profile
-  - `GET /api/users/list/` - User list (admin)
+#### Current Services
+1. **User Management Service**
+   - Django REST Framework backend
+   - JWT authentication and RBAC
+   - PostgreSQL database
 
-#### 2. Frontend Application
-- React 19.1 with TypeScript
-- Material-UI v5
-- Features:
-  - JWT authentication
-  - Role-based UI
-  - Responsive dashboard
-  - User management interface
+2. **Frontend Application**
+   - React 19.1 with TypeScript
+   - Material-UI v5
+   - Responsive dashboard
 
-#### 3. Infrastructure
-- Nginx load balancer (with SSL termination planned)
-- PostgreSQL database
-- Docker containerization
-
-### Planned Services
-- Dashboard API for real-time data visualization
-- IoT data ingestion service for sensor data collection
-- AI analytics processor for predictive maintenance
-- Alert management system for notifications
-- IoT simulator for development and testing
+3. **Infrastructure**
+   - Nginx load balancer
+   - PostgreSQL database
+   - Docker containerization
 
 ## Database Architecture
 
 ### Overview
-The system uses PostgreSQL with a microservices-oriented design:
-
-- **user_accounts_db**
-  - Dedicated database for the User API service
-  - Handles user authentication and authorization
-  - Managed by the `db_user_service_user_api` role with appropriate security permissions
-  - Contains Django's default auth tables and custom user-related tables
-
-### Security Model
-- Multi-layered access control
-- Service-specific database users
-- Environment-based configuration
-- Containerized access
+- PostgreSQL with microservices design
+- Dedicated `user_accounts_db` for User API
+- Role-based database access control
+- Containerized for security
 
 ### Database Users
-1. **RDMS User (Admin)**
-   - Full administrative access
-   - Database maintenance and backups
-   - User: `rdms_user`
-   - Role: Database Administrator
+1. **Admin** (`rdms_user`): Full administrative access
+2. **Service** (`db_user_service_user_api`): Limited privileges
 
-2. **Service User**
-   - Limited to service-specific database
-   - Minimal required privileges
-   - User: `db_user_service_user_api`
-   - Role: Application Service Account
-
-#### Security Measures
-- Database credentials are managed through environment variables
-- Connection strings and sensitive data are stored in `.env` files (not version controlled)
-- Each service connects with minimum required privileges
-- Database access is containerized and not exposed to the public network
-
-### Connection Details
-
-#### For Application Services
-- Host: PostgreSQL container (`db`)
-- Port: 5432
-- Database: `user_accounts_db`
-- User: `db_user_service_user_api`
-- Password: Managed via environment variables
-
-#### For Database Administration
-- Host: localhost (or container `db`)
-- Port: 5432
-- User: `rdms_user`
-- Password: Managed via environment variables
-- Access: All databases
-- Tools: Can use database management tools like TablePlus
-
-### Database Initialization
-- Database and roles are automatically created during container startup
-- Two-phase initialization process:
-  1. `init-db.sql` creates service user and initial database
-  2. `create_rdms_user.sql` sets up the database administrator role
-- Django migrations handle schema creation and updates
-- Environment-specific setup (local/production) handled through environment variables
+### Security
+- Environment variable-based credentials
+- Containerized database access
+- Service-specific permissions
+- Automated initialization process
 
 
-## How to Run
+## Getting Started
 
 ### Prerequisites
-- Docker and Docker Compose installed
-- Node.js for frontend development
-- Python 3.11+ for local development
+- Docker and Docker Compose
+- Node.js
+- Python 3.11+
 
-### Setup Instructions
-
-1. **Environment Setup:**
+### Quick Start
+1. **Clone and Setup:**
    ```bash
-   # Clone the repository
    git clone https://github.com/Abey627/boiler-monitoring-react-drf.git
    cd boiler-monitoring-react-drf
-
-   # Copy environment template
-   cd services
-   cp .env.example .env
-   # Edit .env with your desired configuration
+   cd services && cp .env.example .env
    ```
 
-2. **Start Backend Services:**
+2. **Start Services:**
    ```bash
-   # From the services directory
-   docker-compose up --build
-   ```
-   This will start:
-   - Nginx load balancer
-   - PostgreSQL database
-   - User API service
-   - Initialize test users for development
-
-3. **Start Frontend Application:**
-   ```bash
-   # From the frontend directory
-   npm install
-   npm start
-   ```
-   The frontend will be available at http://localhost:3000
-
-3. **Import Postman Collection:**
-   - Import `postman/Boiler_Monitoring_API.postman_collection.json`
-   - Import `postman/Boiler_Monitoring_Environment.postman_environment.json`
-   - Select the "Boiler Monitoring Environment" in Postman
-
-4. **Ready to Test:**
-   - The system will initialize with pre-configured test users
-   - See [Test Users](#test-users) section for credentials and capabilities
-   - Use these accounts to test different role permissions
-
-### Service URLs
-- Frontend: http://localhost:3000
-- API Gateway (Nginx): http://localhost
-- Database: localhost:5432 (internal only)
-
-### Frontend Application
-
-The frontend is built with React, TypeScript, and Material-UI, providing a modern and responsive user interface.
-
-#### Features
-- **Authentication System**
-  - JWT-based authentication
-  - Login and registration forms
-  - Automatic token refresh
-  - Persistent authentication state
-
-- **User Interface**
-  - Modern Material-UI components
-  - Responsive design for all screen sizes
-  - Role-based access control
-  - Intuitive navigation
-
-- **Dashboard**
-  - User information overview
-  - Role-specific content
-  - Interactive cards with hover effects
-  - Real-time updates
-
-- **User Management**
-  - User list with search functionality (admin only)
-  - User profile management
-  - Role-based permissions
-  - Responsive data tables
-
-#### Frontend Setup
-
-1. **Install Dependencies:**
-   ```bash
-   cd frontend
-   npm install
+   docker-compose up --build   # From services directory
+   cd ../frontend
+   npm install && npm start
    ```
 
-2. **Environment Setup:**
-   ```bash
-   # Create .env file
-   echo "REACT_APP_API_URL=http://localhost/api" > .env
-   ```
+3. **Access Applications:**
+   - Frontend: http://localhost:3000
+   - API Gateway: http://localhost
+   - Database: localhost:5432 (internal only)
 
-3. **Start Development Server:**
-   ```bash
-   npm start
-   ```
+4. **Test Users:**
+   | Role      | Username | Password    | Access Level |
+   |-----------|----------|-------------|--------------|
+   | Admin     | admin    | Admin123!   | Full access  |
+   | Operator  | operator | Operator123!| Operations   |
+   | Viewer    | viewer   | Viewer123!  | Read-only    |
 
-4. **Build for Production:**
-   ```bash
-   npm run build
-   ```
-
-#### Frontend Structure
-```
-frontend/
-├── src/
-│   ├── components/
-│   │   ├── Dashboard.tsx      # Main dashboard view
-│   │   ├── Layout.tsx         # Application layout with navigation
-│   │   ├── LoginForm.tsx      # User login form
-│   │   ├── RegisterForm.tsx   # User registration form
-│   │   ├── UserList.tsx       # User management (admin only)
-│   │   └── UserProfile.tsx    # User profile management
-│   ├── contexts/
-│   │   └── AuthContext.tsx    # Authentication state management
-│   ├── routes/
-│   │   └── AppRoutes.tsx      # Application routing
-│   ├── services/
-│   │   └── api.ts            # API service integration
-│   ├── types/
-│   │   └── auth.ts           # TypeScript type definitions
-│   └── App.tsx               # Root component
-```
-
-#### Key Technologies
-- React 19.1
-- TypeScript 4.9
-- Material-UI v5
-- React Router v6
-- JWT Authentication
+### API Testing
+- Import Postman collections from `postman/` directory
+- Use provided test users to explore different role permissions
 
 ## Development Guide
 
-### Test Users
-| Role      | Username | Password    | Capabilities |
-|-----------|----------|-------------|--------------|
-| Admin     | admin    | Admin123!   | Full system access, user management |
-| Operator  | operator | Operator123!| Operation functions, self-management |
-| Viewer    | viewer   | Viewer123!  | Read-only access, self-management |
-
 ### Project Structure
 ```
-frontend/
+frontend/              # React frontend application
 ├── src/
-│   ├── components/    # UI components
-│   ├── contexts/      # State management
-│   ├── routes/        # Navigation
-│   ├── services/      # API integration
-│   ├── theme/         # Theme configuration and styles
-│   └── types/         # TypeScript definitions
+│   ├── components/   # UI components
+│   ├── contexts/     # State management
+│   ├── routes/       # Navigation
+│   ├── services/     # API integration
+│   └── types/        # TypeScript definitions
 
-services/
-├── user_api/         # User management service
-├── nginx/            # Load balancer
-└── scripts/          # Database initialization
+services/             # Backend services
+├── user_api/        # User management API
+├── nginx/           # Load balancer
+└── scripts/         # Initialization scripts
 ```
 
-These users are automatically created when you start the services and can be used to test different permission levels and functionality in the system.
-
 ### Learning Path
-1. **Backend:**
-   - Start: `services/user_api/settings.py`
-   - Models: `services/user_api/accounts/models.py`
-   - APIs: `services/user_api/accounts/views.py`
+1. **Backend Development:**
+   - Configuration: `services/user_api/settings.py`
+   - Data Models: `services/user_api/accounts/models.py`
+   - API Endpoints: `services/user_api/accounts/views.py`
 
-2. **Frontend:**
-   - Entry: `frontend/src/App.tsx`
-   - Auth: `frontend/src/contexts/AuthContext.tsx`
-   - API: `frontend/src/services/api.ts`
+2. **Frontend Development:**
+   - Main App: `frontend/src/App.tsx`
+   - Authentication: `frontend/src/contexts/AuthContext.tsx`
+   - API Client: `frontend/src/services/api.ts`
+
+### Technologies
+- React 19.1 with TypeScript 4.9
+- Material-UI v5
+- Django REST Framework
+- PostgreSQL
+- Docker & Docker Compose
 
 ## Contributing
 1. Fork the repository
