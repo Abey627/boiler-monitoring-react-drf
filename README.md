@@ -1,21 +1,50 @@
 
-## Main Modules
+# Boiler Monitoring Platform
 
+## Overview
+A comprehensive industrial boiler monitoring system built with React, Django REST Framework, and Docker. This portfolio project showcases real-time monitoring, user management, and IoT integration capabilities.
 
-- **User API Service Architecture:**
-	- Built with Django REST Framework for secure user management
-	- **Core Components:**
-		- Custom User Model with role-based access (admin, operator, viewer)
-		- JWT (JSON Web Token) Authentication
-		- RESTful API endpoints
+### Frontend Features
+- **Authentication System**
+  - JWT-based authentication
+  - Login and registration forms
+  - Automatic token refresh
+  - Persistent authentication state
+
+- **Industrial Theme System**
+  - Custom theme designed for boiler monitoring
+  - Industrial color palette with semantic meanings
+    - Blues for primary actions
+    - Orange for warnings
+    - Red for critical alerts
+    - Green for normal operations
+  - Consistent typography and spacing
+  - Smooth animations and transitions
+  - Status indicators for boiler states
+  - Custom scrollbars and card effects
+
+- **User Interface**
+  - Modern Material-UI components
+  - Responsive design for all screen sizes
+  - Role-based access control
+  - Intuitive navigation
+  - Interactive dashboard cards with hover effects
+  - Page transition animations
+
+### Key Features
+- Real-time boiler monitoring and visualization
+- Role-based access control (Admin, Operator, Viewer)
+- Secure JWT authentication
+- Containerized microservices architecture
+- RESTful API design
 	
 	- **API Endpoints:**
-		- POST `/api/register/` - New user registration
-		- POST `/api/token/` - Obtain JWT access & refresh tokens
-		- POST `/api/token/refresh/` - Refresh JWT token
-		- GET `/api/me/` - Get current user profile
-		- PUT `/api/me/` - Update current user profile
-		- GET `/api/users/` - List users (admin-only for full list)
+		- POST `/api/users/register/` - New user registration
+		- POST `/api/users/token/` - Obtain JWT access & refresh tokens
+		- POST `/api/users/token/refresh/` - Refresh JWT token
+		- GET `/api/users/me/` - Get current user profile
+		- PUT `/api/users/me/` - Update current user profile
+		- GET `/api/users/list/` - List users (admin-only for full list)
 
 	- **Security Features:**
 		- JWT-based authentication
@@ -67,32 +96,46 @@
 ## Purpose
 This project is designed to help monitor industrial boilers in real-time. It provides a user-friendly web interface for viewing boiler status, alerts, and historical data. The platform is built as a portfolio project to showcase skills in React, Django REST Framework, Docker, and IoT simulation.
 
-## Architecture Overview
+## Architecture
 
-### Current Implementation
-- **Load Balancer (Nginx)**
-  - Routes API requests to appropriate services
-  - Handles SSL termination (planned)
-  - Manages URL normalization and request preprocessing
-  - Health checks for backend services
+### Current Services
 
-- **User Management Service**
-  - Built with Django REST Framework
-  - JWT-based authentication
-  - Role-based access control (admin, operator, viewer)
-  - PostgreSQL database backend
+#### 1. User Management Service
+- Django REST Framework backend
+- JWT-based authentication
+- Role-based access control
+- PostgreSQL database
+- Key endpoints:
+  - `POST /api/users/register/` - Registration
+  - `POST /api/users/token/` - Authentication
+  - `GET /api/users/me/` - User profile
+  - `GET /api/users/list/` - User list (admin)
+
+#### 2. Frontend Application
+- React 19.1 with TypeScript
+- Material-UI v5
+- Features:
+  - JWT authentication
+  - Role-based UI
+  - Responsive dashboard
+  - User management interface
+
+#### 3. Infrastructure
+- Nginx load balancer (with SSL termination planned)
+- PostgreSQL database
+- Docker containerization
 
 ### Planned Services
-- Dashboard API
-- IoT Data Ingestion
-- AI Analytics Processor
-- Alert Management
-- IoT Simulator
+- Dashboard API for real-time data visualization
+- IoT data ingestion service for sensor data collection
+- AI analytics processor for predictive maintenance
+- Alert management system for notifications
+- IoT simulator for development and testing
 
 ## Database Architecture
 
-### Database Overview
-The system uses PostgreSQL for data storage with a microservices-oriented database design:
+### Overview
+The system uses PostgreSQL with a microservices-oriented design:
 
 - **user_accounts_db**
   - Dedicated database for the User API service
@@ -100,38 +143,24 @@ The system uses PostgreSQL for data storage with a microservices-oriented databa
   - Managed by the `db_user_service_user_api` role with appropriate security permissions
   - Contains Django's default auth tables and custom user-related tables
 
-### Database Security
+### Security Model
+- Multi-layered access control
+- Service-specific database users
+- Environment-based configuration
+- Containerized access
 
-The system implements a multi-layered security approach with different database users for different purposes:
+### Database Users
+1. **RDMS User (Admin)**
+   - Full administrative access
+   - Database maintenance and backups
+   - User: `rdms_user`
+   - Role: Database Administrator
 
-#### Database Users/Roles
-
-1. **RDMS User (Database Administrator)**
-   - Username: `rdms_user`
-   - Purpose: Database administration and management
-   - Privileges:
-     - SUPERUSER privileges (full administrative access)
-     - Can create/modify/delete databases
-     - Can create/modify/delete roles
-     - Can manage replication
-     - Can bypass row-level security
-   - Use cases:
-     - Database maintenance and administration
-     - Managing database users and permissions
-     - Creating new databases for services
-     - Performing backups and restorations
-
-2. **User API Service User**
-   - Username: `db_user_service_user_api`
-   - Purpose: Dedicated user for User API microservice
-   - Privileges:
-     - Limited to `user_accounts_db`
-     - Full access to auth-related tables
-     - Can create/modify tables through Django migrations
-   - Use cases:
-     - User authentication and authorization
-     - Managing user profiles and settings
-     - Handling role-based access control
+2. **Service User**
+   - Limited to service-specific database
+   - Minimal required privileges
+   - User: `db_user_service_user_api`
+   - Role: Application Service Account
 
 #### Security Measures
 - Database credentials are managed through environment variables
@@ -302,58 +331,53 @@ frontend/
 - React Router v6
 - JWT Authentication
 
+## Development Guide
+
 ### Test Users
+| Role      | Username | Password    | Capabilities |
+|-----------|----------|-------------|--------------|
+| Admin     | admin    | Admin123!   | Full system access, user management |
+| Operator  | operator | Operator123!| Operation functions, self-management |
+| Viewer    | viewer   | Viewer123!  | Read-only access, self-management |
 
-The system is pre-configured with three test users representing different roles:
+### Project Structure
+```
+frontend/
+├── src/
+│   ├── components/    # UI components
+│   ├── contexts/      # State management
+│   ├── routes/        # Navigation
+│   ├── services/      # API integration
+│   ├── theme/         # Theme configuration and styles
+│   └── types/         # TypeScript definitions
 
-#### 1. Administrator
-- **Username:** `admin`
-- **Password:** `Admin123!`
-- **Email:** `admin@example.com`
-- **Role:** admin
-- **Capabilities:**
-  - View and manage all users
-  - Access all API endpoints
-  - View system-wide information
-  - Full administrative privileges
-
-#### 2. Operator
-- **Username:** `operator`
-- **Password:** `Operator123!`
-- **Email:** `operator@example.com`
-- **Role:** operator
-- **Capabilities:**
-  - View own profile
-  - Update own information
-  - Limited to operator-specific functions
-
-#### 3. Viewer
-- **Username:** `viewer`
-- **Password:** `Viewer123!`
-- **Email:** `viewer@example.com`
-- **Role:** viewer
-- **Capabilities:**
-  - View own profile
-  - Update own information
-  - Read-only access to permitted resources
+services/
+├── user_api/         # User management service
+├── nginx/            # Load balancer
+└── scripts/          # Database initialization
+```
 
 These users are automatically created when you start the services and can be used to test different permission levels and functionality in the system.
 
-### API Endpoints
+### Learning Path
+1. **Backend:**
+   - Start: `services/user_api/settings.py`
+   - Models: `services/user_api/accounts/models.py`
+   - APIs: `services/user_api/accounts/views.py`
 
-All API endpoints are accessed through the Nginx load balancer at `http://localhost`.
+2. **Frontend:**
+   - Entry: `frontend/src/App.tsx`
+   - Auth: `frontend/src/contexts/AuthContext.tsx`
+   - API: `frontend/src/services/api.ts`
 
-#### Authentication Endpoints
-- `POST /api/register/` - Register new user
-- `POST /api/token/` - Get JWT access & refresh tokens
-- `POST /api/token/refresh/` - Refresh JWT token
+## Contributing
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
 
-#### User Management Endpoints
-- `GET /api/me/` - Get current user profile
-- `PUT /api/me/` - Update current user profile
-- `GET /api/users/` - List all users (admin only)
-
-### Using the Postman Collection
+## License
+MIT
 
 1. **Authentication:**
    - Use the "Login (Get Token)" request with any test user credentials

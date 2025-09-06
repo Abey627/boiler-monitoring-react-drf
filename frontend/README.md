@@ -1,6 +1,39 @@
-# Getting Started with Create React App
+# Boiler Monitoring System Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern React application for monitoring and managing industrial boiler systems. This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app) and uses Material-UI for its component system.
+
+## Theme and Styling
+
+The application implements a custom industrial theme designed specifically for boiler monitoring systems:
+
+### Color Palette
+- Primary: Industrial blue (#1E88E5) - Used for main actions and navigation
+- Secondary: Warning orange (#FF9800) - Used for alerts and notifications
+- Error: Critical red (#E53935) - Used for critical alerts
+- Success: Green (#43A047) - Used for normal operation indicators
+- Info: Light blue (#29B6F6) - Used for information indicators
+- Background: Light gray (#F5F7FA) - Main background color
+
+### Features
+- Responsive Material-UI components
+- Custom scrollbars for better user experience
+- Smooth animations and transitions
+- Status indicators for boiler states
+- Hover effects on dashboard cards
+- Page transition animations
+
+### Theme Structure
+The theme is organized in `src/theme/theme.ts` and includes:
+- Custom palette configuration
+- Typography settings
+- Component style overrides
+- Global CSS styles in `src/App.css`
+
+### Usage
+Components automatically adopt the theme when wrapped with `ThemeProvider`. Custom CSS classes are available for:
+- Status indicators (`.status-normal`, `.status-warning`, `.status-critical`)
+- Animations (`.fadeIn`, `.dashboard-card`)
+- Page transitions (`.page-enter`, `.page-exit`)
 
 ## Available Scripts
 
