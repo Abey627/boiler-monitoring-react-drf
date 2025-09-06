@@ -14,8 +14,25 @@
 1. Initialize Django project for dashboard data only. [done]
 2. Set up Django REST Framework. [done]
 3. Set up database access and permissions. [done]
-4. Build API endpoints for dashboard data.
-5. Write unit tests for API endpoints.
+4. Implement JWT token validation:
+   - Add JWT middleware for token verification
+   - Configure shared JWT secret with User API
+   - Extract user roles from JWT claims
+   - Set up permission classes based on JWT roles
+5. Build API endpoints for dashboard data:
+   - Real-time boiler metrics endpoint
+   - Historical data with time range endpoint
+   - System alerts endpoint
+   - Dashboard preferences endpoint
+6. Add environment variables:
+   - JWT secret key (shared with User API)
+   - Token validation settings
+   - CORS settings for frontend
+7. Write unit tests:
+   - JWT token validation tests
+   - Role-based access tests
+   - API endpoint tests
+   - Error handling tests
 
 ## Frontend (React + TypeScript)
 1. Clean up default React files and structure. [done]
@@ -31,6 +48,11 @@
    - Protected routes [done]
    - Token refresh mechanism [done]
    - Logout functionality [done]
+5. Implement Dashboard API integration:
+   - Add Dashboard API service client
+   - Reuse JWT token from AuthContext
+   - Add error handling for Dashboard API requests
+   - Implement real-time data fetching
 5. Add data visualization (charts for dashboard data):
    - Temperature charts
    - Pressure monitoring
@@ -62,6 +84,11 @@
    - Dashboard API service [done]
    - Frontend application
    - IoT simulator
+2. Configure shared JWT authentication:
+   - Set up secure environment variables for JWT secret
+   - Configure JWT secret sharing between services
+   - Test token propagation in Docker environment
+   - Document JWT secret management
 2. Set up PostgreSQL service in Docker Compose. [done]
 3. Create `docker-compose.yml`:
    - Backend services configuration [done]

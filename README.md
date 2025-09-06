@@ -22,12 +22,21 @@ A comprehensive industrial boiler monitoring system built with React, Django RES
 - Auto-migrations and hot-reload for development
 
 ### API Endpoints
+
+#### User API
 - POST `/api/users/register/` - New user registration
 - POST `/api/users/token/` - Obtain JWT tokens
 - POST `/api/users/token/refresh/` - Refresh JWT token
 - GET `/api/users/me/` - Current user profile
 - PUT `/api/users/me/` - Update profile
 - GET `/api/users/list/` - List users (admin-only)
+
+#### Dashboard API
+- GET `/api/dashboard/boiler-data/` - Real-time boiler metrics
+- GET `/api/dashboard/historical/` - Historical data with time range
+- GET `/api/dashboard/alerts/` - System alerts and notifications
+- POST `/api/dashboard/settings/` - Update dashboard preferences
+Note: All Dashboard API endpoints use the same JWT token from User API
 
 ### Planned Features
 - Dashboard API for real-time visualization
@@ -45,16 +54,34 @@ A comprehensive industrial boiler monitoring system built with React, Django RES
    - Django REST Framework backend
    - JWT authentication and RBAC
    - PostgreSQL database
+   - Issues and manages JWT tokens for all services
 
-2. **Frontend Application**
+2. **Dashboard API Service**
+   - Django REST Framework backend
+   - Reuses JWT tokens from User Management Service
+   - Real-time data visualization endpoints
+   - Role-based access using JWT claims
+   - Dedicated PostgreSQL database for time-series data
+
+3. **Frontend Application**
    - React 19.1 with TypeScript
    - Material-UI v5
    - Responsive dashboard
+   - Single JWT token for all API communications
+   - Automatic token refresh through User API
 
-3. **Infrastructure**
+4. **Infrastructure**
    - Nginx load balancer
-   - PostgreSQL database
+   - PostgreSQL databases
    - Docker containerization
+   - Shared JWT secret via environment variables
+
+#### Authentication Flow
+1. Frontend authenticates with User API to obtain JWT
+2. Same JWT token is used for Dashboard API requests
+3. Dashboard API validates token using shared JWT secret
+4. User roles and permissions extracted from JWT claims
+5. Token refresh handled through User API only
 
 ## Database Architecture
 
