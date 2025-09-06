@@ -1,0 +1,165 @@
+{
+    "info": {
+        "_postman_id": "random-uuid",
+        "name": "Boiler Monitoring API",
+        "description": "Collection for Boiler Monitoring System APIs",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Authentication",
+            "item": [
+                {
+                    "name": "Register User",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"username\": \"testuser\",\n    \"password\": \"StrongPass123!\",\n    \"password2\": \"StrongPass123!\",\n    \"email\": \"test@example.com\",\n    \"first_name\": \"Test\",\n    \"last_name\": \"User\",\n    \"role\": \"user\",\n    \"phone_number\": \"+1234567890\",\n    \"company\": \"Test Company\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/register/",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "register"]
+                        },
+                        "description": "Register a new user in the system"
+                    }
+                },
+                {
+                    "name": "Login (Get Token)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"username\": \"testuser\",\n    \"password\": \"StrongPass123!\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/token/",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "token"]
+                        },
+                        "description": "Get JWT token for authentication"
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = JSON.parse(responseBody);",
+                                    "if (jsonData.access) {",
+                                    "    pm.environment.set(\"access_token\", jsonData.access);",
+                                    "}",
+                                    "if (jsonData.refresh) {",
+                                    "    pm.environment.set(\"refresh_token\", jsonData.refresh);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Refresh Token",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"refresh\": \"{{refresh_token}}\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/token/refresh/",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "token", "refresh"]
+                        },
+                        "description": "Refresh JWT token"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "User Management",
+            "item": [
+                {
+                    "name": "Get Current User Details",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/users/me/",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "users", "me"]
+                        },
+                        "description": "Get current user's details"
+                    }
+                },
+                {
+                    "name": "Update Current User",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"first_name\": \"Updated\",\n    \"last_name\": \"Name\",\n    \"email\": \"updated@example.com\",\n    \"phone_number\": \"+1987654321\",\n    \"company\": \"Updated Company\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/users/me/",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "users", "me"]
+                        },
+                        "description": "Update current user's details"
+                    }
+                },
+                {
+                    "name": "List Users",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/users/",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "users"]
+                        },
+                        "description": "List all users (requires admin role)"
+                    }
+                }
+            ]
+        }
+    ]
+}

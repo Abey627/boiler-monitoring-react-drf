@@ -67,6 +67,28 @@
 ## Purpose
 This project is designed to help monitor industrial boilers in real-time. It provides a user-friendly web interface for viewing boiler status, alerts, and historical data. The platform is built as a portfolio project to showcase skills in React, Django REST Framework, Docker, and IoT simulation.
 
+## Architecture Overview
+
+### Current Implementation
+- **Load Balancer (Nginx)**
+  - Routes API requests to appropriate services
+  - Handles SSL termination (planned)
+  - Manages URL normalization and request preprocessing
+  - Health checks for backend services
+
+- **User Management Service**
+  - Built with Django REST Framework
+  - JWT-based authentication
+  - Role-based access control (admin, operator, viewer)
+  - PostgreSQL database backend
+
+### Planned Services
+- Dashboard API
+- IoT Data Ingestion
+- AI Analytics Processor
+- Alert Management
+- IoT Simulator
+
 ## Database Architecture
 
 ### Database Overview
@@ -170,79 +192,97 @@ The system implements a multi-layered security approach with different database 
    docker-compose up --build
    ```
    This will start:
+   - Nginx load balancer
    - PostgreSQL database
    - User API service
-   - Dashboard API service
+   - Initialize test users for development
 
-3. **Frontend Development:**
-   ```bash
-   cd frontend
-   npm install
-   npm start
-   ```
+3. **Import Postman Collection:**
+   - Import `postman/Boiler_Monitoring_API.postman_collection.json`
+   - Import `postman/Boiler_Monitoring_Environment.postman_environment.json`
+   - Select the "Boiler Monitoring Environment" in Postman
+
+4. **Ready to Test:**
+   - The system will initialize with pre-configured test users
+   - See [Test Users](#test-users) section for credentials and capabilities
+   - Use these accounts to test different role permissions
 
 ### Service URLs
-- Frontend: http://localhost:3000
-- User API: http://localhost:8000
-- Dashboard API: http://localhost:8001
-- Database: localhost:5432
+- Frontend: http://localhost:3000 (planned)
+- API Gateway (Nginx): http://localhost
+- Database: localhost:5432 (internal only)
 
-### User API Usage Examples
+### Test Users
 
-#### 1. Register a New User
-```bash
-curl -X POST http://localhost:8000/api/register/ \
-  -H "Content-Type: application/json" \
-  -d '{
-    "username": "operator1",
-    "password": "SecurePass123!",
-    "password2": "SecurePass123!",
-    "email": "operator@example.com",
-    "first_name": "John",
-    "last_name": "Doe",
-    "role": "operator",
-    "phone_number": "+1234567890",
-    "company": "Acme Industries"
-  }'
-```
+The system is pre-configured with three test users representing different roles:
 
-#### 2. Obtain JWT Token
-```bash
-curl -X POST http://localhost:8000/api/token/ \
-  -H "Content-Type: application/json" \
-  -d '{
-    "username": "operator1",
-    "password": "SecurePass123!"
-  }'
-```
+#### 1. Administrator
+- **Username:** `admin`
+- **Password:** `Admin123!`
+- **Email:** `admin@example.com`
+- **Role:** admin
+- **Capabilities:**
+  - View and manage all users
+  - Access all API endpoints
+  - View system-wide information
+  - Full administrative privileges
 
-#### 3. Get User Profile
-```bash
-curl http://localhost:8000/api/me/ \
-  -H "Authorization: Bearer <your_jwt_token>"
-```
+#### 2. Operator
+- **Username:** `operator`
+- **Password:** `Operator123!`
+- **Email:** `operator@example.com`
+- **Role:** operator
+- **Capabilities:**
+  - View own profile
+  - Update own information
+  - Limited to operator-specific functions
 
-#### 4. Update User Profile
-```bash
-curl -X PUT http://localhost:8000/api/me/ \
-  -H "Authorization: Bearer <your_jwt_token>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "first_name": "John",
-    "last_name": "Doe",
-    "phone_number": "+1234567890",
-    "company": "Acme Industries Ltd"
-  }'
-```
+#### 3. Viewer
+- **Username:** `viewer`
+- **Password:** `Viewer123!`
+- **Email:** `viewer@example.com`
+- **Role:** viewer
+- **Capabilities:**
+  - View own profile
+  - Update own information
+  - Read-only access to permitted resources
 
-#### 5. Refresh Token
-```bash
-curl -X POST http://localhost:8000/api/token/refresh/ \
-  -H "Content-Type: application/json" \
-  -d '{
-    "refresh": "<your_refresh_token>"
-  }'
-```
+These users are automatically created when you start the services and can be used to test different permission levels and functionality in the system.
+
+### API Endpoints
+
+All API endpoints are accessed through the Nginx load balancer at `http://localhost`.
+
+#### Authentication Endpoints
+- `POST /api/register/` - Register new user
+- `POST /api/token/` - Get JWT access & refresh tokens
+- `POST /api/token/refresh/` - Refresh JWT token
+
+#### User Management Endpoints
+- `GET /api/me/` - Get current user profile
+- `PUT /api/me/` - Update current user profile
+- `GET /api/users/` - List all users (admin only)
+
+### Using the Postman Collection
+
+1. **Authentication:**
+   - Use the "Login (Get Token)" request with any test user credentials
+   - The collection automatically saves the JWT token for other requests
+
+2. **Testing Different Roles:**
+   - Login as different users to test role-based access
+   - Admin can see all users in `/api/users/`
+   - Operator and Viewer can only see their own data
+
+3. **Register New Users:**
+   - Use the "Register User" request
+   - Required fields: username, password, password2, email, first_name, last_name
+   - Optional fields: role, phone_number, company
+
+4. **Token Management:**
+   - Access tokens expire after a set time
+   - Use "Refresh Token" request to get a new access token
+   - Keep your refresh token secure
 	- Register, login, and manage users securely using Django REST Framework.
 	- Role-based access for different user types (e.g., admin, operator).
 	- Runs independently for performance and reliability.

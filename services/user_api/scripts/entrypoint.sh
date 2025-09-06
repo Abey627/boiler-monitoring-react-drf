@@ -20,11 +20,9 @@ python manage.py makemigrations accounts
 echo "Applying migrations..."
 python manage.py migrate
 
-# Create superuser if needed (optional)
-if [ "$DJANGO_SUPERUSER_USERNAME" ] && [ "$DJANGO_SUPERUSER_EMAIL" ] && [ "$DJANGO_SUPERUSER_PASSWORD" ]; then
-    echo "Creating superuser..."
-    python manage.py createsuperuser --noinput || true
-fi
+# Initialize test users
+echo "Initializing test users..."
+python manage.py init_test_users
 
 # Start the application
 echo "Starting application..."

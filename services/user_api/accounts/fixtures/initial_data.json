@@ -1,0 +1,56 @@
+[
+    {
+        "model": "accounts.user",
+        "pk": 1,
+        "fields": {
+            "username": "admin",
+            "email": "admin@example.com",
+            "password": "pbkdf2_sha256$600000$Admin123!",
+            "first_name": "Super",
+            "last_name": "Admin",
+            "role": "admin",
+            "phone_number": "+1234567890",
+            "company": "Boiler Monitoring Inc.",
+            "is_superuser": true,
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2025-09-06T00:00:00Z"
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 2,
+        "fields": {
+            "username": "operator",
+            "email": "operator@example.com",
+            "password": "pbkdf2_sha256$600000$Operator123!",
+            "first_name": "Test",
+            "last_name": "Operator",
+            "role": "operator",
+            "phone_number": "+1987654321",
+            "company": "Boiler Monitoring Inc.",
+            "is_superuser": false,
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-09-06T00:00:00Z"
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 3,
+        "fields": {
+            "username": "viewer",
+            "email": "viewer@example.com",
+            "password": "pbkdf2_sha256$600000$Viewer123!",
+            "first_name": "Test",
+            "last_name": "Viewer",
+            "role": "viewer",
+            "phone_number": "+1122334455",
+            "company": "Client Company Ltd.",
+            "is_superuser": false,
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-09-06T00:00:00Z"
+        }
+    }
+]
